@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { settext, additem } from './CreateSlice';
 
 function App() {
+  const newstate = useSelector((state) => state.text.items);
+  const newtext = useSelector((state) => state.text.text);
+  
+
+  // Fix: Invoke useDispatch as a function
+  const dispatch = useDispatch(); // Parentheses added here
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input
+        type="text"
+        value={newtext}
+        onChange={(e) => dispatch(settext(e.target.value))}
+      />
+      <button onClick={() => dispatch(additem())}>Add Item</button>
+     
+      <ol>
+        {newstate.map((item, index) => (
+          <li key={index}>{item}</li> // key helps React optimize re-rendering
+        ))}
+      </ol>
     </div>
   );
 }
